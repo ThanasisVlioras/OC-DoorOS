@@ -37,4 +37,8 @@ You can change any one of those values.
 
 - The vertical margin is the vertical spacing between 2 buttons, you can see that in the included pictures too.
 
-After you customize this file to you can open it with the installer and kablooey ! It works
+After you customize this file to your needs you can open it with the installer and kablooey ! It works
+
+# Command to run in OpenOS to open the installer :
+
+`pastebin run QbyHTHQg`
