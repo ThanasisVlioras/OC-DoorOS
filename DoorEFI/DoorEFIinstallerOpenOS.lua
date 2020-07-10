@@ -7,7 +7,7 @@ local function crunch(code)
   local handle = io.open("/DoorEFItmp", "w")
   handle:write(code)
   handle:close()
-  os.execute("crunch --lz77 --tree DoorEFItmp DoorEFItmp.comp")
+  os.execute("crunch --lz77 --tree /DoorEFItmp /DoorEFItmp.comp")
 
   local handle = io.open("/DoorEFItmp.comp", "r")
   local ret = handle:read("*all")
