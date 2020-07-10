@@ -15,12 +15,12 @@ Opening the installer, you will be prompted to optionally select a config file. 
 
  Here is the syntax the config file has to follow :
 
-`<local autoBootInterval = 2>`
-`<local backgroundColor = 0x097A2D>`
-`<local foregroundColor = 0xC4FFAD>`
-`<local verticalPadding = 3>`
-`<local horizontalPadding = 2>`
-`<local verticalMargin = 2'>`
+`local autoBootInterval = 2`  
+`local backgroundColor = 0x097A2D`  
+`local foregroundColor = 0xC4FFAD`  
+`local verticalPadding = 3`  
+`local horizontalPadding = 2`  
+`local verticalMargin = 2`  
 
 You can change any one of those values.
 
