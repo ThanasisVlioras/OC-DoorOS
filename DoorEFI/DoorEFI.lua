@@ -23,6 +23,7 @@ function GUI:new(name, y, text, rectColor, textColor)
   local object = {}
   setmetatable(object, self)
   self.__index = self
+
   object.x = centrizeObject(text)
   object.y = y
   object.text = text

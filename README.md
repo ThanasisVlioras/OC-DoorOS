@@ -2,4 +2,4 @@
 
 DoorOS is an operating system for the minecraft mod OpenComputers.
 
-As of now, its EFI is under construction but DoorOS does not exist.
+Its EFI is in an early working state and the operating system for now is just a filesystem API used to read a file and print its contents

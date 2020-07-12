@@ -7,7 +7,7 @@ DoorEFI is the built in EFI / BIOS of DoorOS (does not exist yet). It is conside
 - Booting from init.lua / OS.lua files
 - Selecting the boot filesystem through a menu using arrow keys
 - Booting from a real URL (Work In Progress)
-- Customizable UI
+- Customizable UI (Only 160 * 50 resolution though, sorry)
 
 ## How to customize your UI (Instructions for OpenOS, for now)
 
