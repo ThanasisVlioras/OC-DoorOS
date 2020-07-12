@@ -11,7 +11,7 @@ DoorEFI is the built in EFI / BIOS of DoorOS (does not exist yet). It is conside
 
 ## How to customize your UI (Instructions for OpenOS, for now)
 
-Opening the installer, you will be prompted to optionally select a config file. Additionally, you are going to have to install the crunch compressing software (Third Party, not made by me) for this to work. To do that, you need to install oppm (The doorOS package manager) using its floppy disk, and then just run "oppm install crunch"
+Opening the installer (look at the bottom of this page), you will be prompted to optionally select a config file. Additionally, you are going to have to install the crunch compressing software (Third Party, not made by me) for this to work. To do that, you need to install oppm (The doorOS package manager) using its floppy disk, and then just run "oppm install crunch"
 
  Here is the syntax the config file has to follow :
 
