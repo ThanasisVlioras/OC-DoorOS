@@ -29,4 +29,12 @@ function handlerAPI:close(handle)
   self.proxy.close(handle)
 end
 
+function handlerAPI:list(path)
+  return self.proxy.list(path)
+end
+
+function handlerAPI:getLabel()
+  return self.proxy.getLabel()
+end
+
 return handlerAPI

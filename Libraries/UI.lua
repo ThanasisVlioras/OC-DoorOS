@@ -1,8 +1,9 @@
 local GUI = {}
 local GUIobjects = {}
+UIoptions = doLoadFromBootFS("/Options/UI")
 
 local function centrizeObject(fx) -- Gives the proper x value that puts the object's center through the screen's center
-  return 80 - (#fx / 2)
+  return 80 - (fx / 2)
 end
 
 function GUI:new(name, y, text, rectColor, textColor)
@@ -10,10 +11,10 @@ function GUI:new(name, y, text, rectColor, textColor)
   setmetatable(object, self)
   self.__index = self
 
-  object.x = centrizeObject(text)
+  object.x = centrizeObject(#text)
   object.y = y
   object.text = text
-  object.fx = #object.text
+  object.fx = #object.text + UIoptions.horizontalPadding
   object.rectColor = rectColor
   object.textColor = textColor
   GUIobjects[name] = object
@@ -23,10 +24,10 @@ function GUI:render()
   gpu.setBackground(self.rectColor)
   gpu.setForeground(self.textColor)
 
-  gpu.fill(self.x, self.y, self.fx, 3, " ")
+  gpu.fill(self.x, self.y, self.fx, UIoptions.verticalPadding, " ")
 
-  local yTextCentrized = self.y + math.floor(3 / 2)
-  gpu.set(self.x + 0, yTextCentrized, self.text)
+  local yTextCentrized = self.y + math.floor(UIoptions.verticalPadding / 2)
+  gpu.set(self.x + UIoptions.horizontalPadding / 2, yTextCentrized, self.text)
 end
 
 function GUI:unRender()
@@ -45,6 +46,28 @@ function GUI:setAdjacentObjects(up, down, left, right)
   if down then self.down = down end
   if left then self.left = left end
   if right then self.right = right end
+end
+
+function GUI:connect(up, down, left, right)
+  if up then
+    self.up = up
+    up.down = self
+  end
+
+  if down then
+    self.down = down
+    down.up = self
+  end
+
+  if left then
+    self.left = left
+    left.right = self
+  end
+
+  if right then
+    self.right = right
+    right.left = self
+  end
 end
 
 function GUI:setHighlight(input)

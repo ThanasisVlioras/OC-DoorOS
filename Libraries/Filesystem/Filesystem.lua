@@ -3,7 +3,7 @@ local handles = {} -- Each key is a handle and each value is its handler table
 local API = {}
 
 function API.seperatePathParts(path)
-  local seperatorIndex, seperatorEndIndex = path:find("://")
+  local seperatorIndex, seperatorEndIndex = path:find(":/")
 
   local label = path:sub(1, seperatorIndex - 1)
   local resolvedPath = path:sub(seperatorEndIndex + 1, - 1)
@@ -33,12 +33,14 @@ function API.close(handle)
   handles[handle] = nil -- Remove the entry
 end
 
-local labels = {"C", "D", "E"}
-local labelsIndex = 1
-function API.mount(filesystemHandler)
-  filesystems[labels[labelsIndex]] = filesystemHandler
+function API.list(path)
+  local label, resolvedPath = API.seperatePathParts(path)
 
-  labelsIndex = labelsIndex + 1
+  return filesystems[label]:list(resolvedPath)
+end
+
+function API.mount(filesystemHandler)
+  filesystems[filesystemHandler:getLabel()] = filesystemHandler
 end
 
 return API

@@ -24,7 +24,7 @@ function GUI:new(name, y, text, rectColor, textColor)
   setmetatable(object, self)
   self.__index = self
 
-  object.x = centrizeObject(#text + horizontalPadding)
+  object.x = centrizeObject(#text)
   object.y = y
   object.text = text
   object.fx = #object.text + horizontalPadding

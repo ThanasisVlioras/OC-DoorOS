@@ -1,4 +1,4 @@
-function doLoadFromBootFS(path)
+function doLoadFromBootFS(path) -- Global until dofile / require is implemented
   local fs = component.proxy(computer.getBootAddress())
 
   local handle = fs.open(path)
@@ -17,29 +17,30 @@ end
 -- Load Libraries
 
 filesystem = doLoadFromBootFS("/Libraries/Filesystem/Filesystem.lua")()
-local normal = doLoadFromBootFS("/Libraries/Filesystem/Normal.lua")()
-filesystem.mount(normal:new(computer.getBootAddress()))
+doLoadFromBootFS("/Boot/MountFilesystems.lua")()
 
 GUI = doLoadFromBootFS("/Libraries/UI.lua")()
-menu = doLoadFromBootFS("/Libraries/Menu.lua")()
+MENU = doLoadFromBootFS("/Libraries/MENU.lua")()
 keyboard = doLoadFromBootFS("/Libraries/Keyboard.lua")()
+UIoptions = doLoadFromBootFS("/Options/UI")()
 
 gpu = component.proxy(component.list("gpu")())
+local MENUFiles = {}
+local MENUMain
 
-gpu.setBackground(0x097A2D)
-gpu.setForeground(0xC4FFAD)
+gpu.setBackground(UIoptions.backgroundColor)
+gpu.setForeground(UIoptions.foregroundColor)
 gpu.fill(1, 1, 160, 50, " ")
 
-GUI:new("test1", 1, "test1", 0x097A2D, 0xC4FFAD)
-GUI:new("test2", 1, "test2", 0x097A2D, 0xC4FFAD)
-GUI:new("test3", 1, "test3", 0x097A2D, 0xC4FFAD)
+local files = filesystem.list("DoorOS://")
+for _, file in ipairs(files) do
+  GUI:new("DoorOS://" .. file, 3, file, UIoptions.backgroundColor, UIoptions.foregroundColor)
+  table.insert(MENUFiles, GUI.returnGUIobjects()["DoorOS://" .. file])
+  if not MENUMain then MENUMain = GUI.returnGUIobjects()["DoorOS://" .. file] end
+end
 
-local testMenu = menu:new({GUI.returnGUIobjects().test1, GUI.returnGUIobjects().test2, GUI.returnGUIobjects().test3}, GUI.returnGUIobjects().test1)
-testMenu:render(true)
-
-GUI.returnGUIobjects().test1:setAdjacentObjects(nil, nil, nil, GUI.returnGUIobjects().test2)
-GUI.returnGUIobjects().test2:setAdjacentObjects(nil, nil, GUI.returnGUIobjects().test1, GUI.returnGUIobjects().test3)
-GUI.returnGUIobjects().test3:setAdjacentObjects(nil, nil, GUI.returnGUIobjects().test2)
+local testMENU = MENU:new(MENUFiles, MENUMain)
+testMENU:render(true)
 
 while true do
   local type, _, _, code = computer.pullSignal()

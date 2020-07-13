@@ -1,0 +1,7 @@
+return {
+backgroundColor = 0x097A2D,
+foregroundColor = 0xC4FFAD,
+horizontalPadding = 2,
+verticalPadding = 3,
+verticalMargin = 1,
+}
