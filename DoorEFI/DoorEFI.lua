@@ -16,7 +16,7 @@ local GUIobjects = {}
 verticalMargin = verticalMargin + verticalPadding -- Avoids button collisions and ensures intented functionality
 
 local function centrizeObject(fx) -- Gives the proper x value that puts the object's center through the screen's center
-  return 80 - (#fx / 2)
+  return 80 - (fx / 2)
 end
 
 function GUI:new(name, y, text, rectColor, textColor)
@@ -24,7 +24,7 @@ function GUI:new(name, y, text, rectColor, textColor)
   setmetatable(object, self)
   self.__index = self
 
-  object.x = centrizeObject(text)
+  object.x = centrizeObject(#text + horizontalPadding)
   object.y = y
   object.text = text
   object.fx = #object.text + horizontalPadding
