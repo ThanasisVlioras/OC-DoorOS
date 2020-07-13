@@ -32,7 +32,7 @@ gpu.setBackground(UIoptions.backgroundColor)
 gpu.setForeground(UIoptions.foregroundColor)
 gpu.fill(1, 1, 160, 50, " ")
 
-local files = filesystem.list("DoorOS://")
+local files = filesystem.list(component.proxy(computer.getBootAddress()).getLabel() .. "://")
 for _, file in ipairs(files) do
   GUI:new("DoorOS://" .. file, 3, file, UIoptions.backgroundColor, UIoptions.foregroundColor)
   table.insert(MENUFiles, GUI.returnGUIobjects()["DoorOS://" .. file])
