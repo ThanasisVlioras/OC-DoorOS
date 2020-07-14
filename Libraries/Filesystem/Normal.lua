@@ -33,6 +33,10 @@ function handlerAPI:list(path)
   return self.proxy.list(path)
 end
 
+function handlerAPI:isDirectory(path)
+  return self.proxy.isDirectory(path)
+end
+
 function handlerAPI:getLabel()
   return self.proxy.getLabel()
 end

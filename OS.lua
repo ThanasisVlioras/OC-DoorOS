@@ -16,35 +16,20 @@ end
 
 -- Load Libraries
 
-filesystem = doLoadFromBootFS("/Libraries/Filesystem/Filesystem.lua")()
-doLoadFromBootFS("/Boot/MountFilesystems.lua")()
+FILESYSTEM = doLoadFromBootFS("/Libraries/Filesystem/Filesystem.lua")()
 
 GUI = doLoadFromBootFS("/Libraries/UI.lua")()
 MENU = doLoadFromBootFS("/Libraries/MENU.lua")()
-keyboard = doLoadFromBootFS("/Libraries/Keyboard.lua")()
 UIoptions = doLoadFromBootFS("/Options/UI")()
 
-gpu = component.proxy(component.list("gpu")())
-local MENUFiles = {}
-local MENUMain
+KEYBOARD = doLoadFromBootFS("/Libraries/Keyboard.lua")()
 
-gpu.setBackground(UIoptions.backgroundColor)
-gpu.setForeground(UIoptions.foregroundColor)
-gpu.fill(1, 1, 160, 50, " ")
+-- Load Components
+GPU = component.proxy(component.list("gpu")())
 
-local files = filesystem.list(component.proxy(computer.getBootAddress()).getLabel() .. "://")
-for _, file in ipairs(files) do
-  GUI:new("DoorOS://" .. file, 3, file, UIoptions.backgroundColor, UIoptions.foregroundColor)
-  table.insert(MENUFiles, GUI.returnGUIobjects()["DoorOS://" .. file])
-  if not MENUMain then MENUMain = GUI.returnGUIobjects()["DoorOS://" .. file] end
-end
+-- Boot
+doLoadFromBootFS("/Boot/MountFilesystems.lua")()
+doLoadFromBootFS("/Boot/ClearScreen.lua")()
 
-local testMENU = MENU:new(MENUFiles, MENUMain)
-testMENU:render(true)
-
-while true do
-  local type, _, _, code = computer.pullSignal()
-  if type == "key_up" then
-    keyboard.keyboardHandle(code)
-  end
-end
+-- Finally, open DoorFiles
+doLoadFromBootFS("/Applications/DoorFiles.lua")()

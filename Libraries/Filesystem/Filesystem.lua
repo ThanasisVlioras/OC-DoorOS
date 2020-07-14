@@ -11,6 +11,19 @@ function API.seperatePathParts(path)
   return label, resolvedPath
 end
 
+function API.levelUp(path)
+  local label, resolvedPath = API.seperatePathParts(path)
+  resolvedPath = resolvedPath:reverse() .. "/" -- When we want to return to the root directory, we need this slash for endIndex to find
+
+  local firstSlash = resolvedPath:find("/", 1)
+  local secondSlash = resolvedPath:find("/", firstSlash + 1)
+  local endIndex = resolvedPath:find("/", secondSlash + 1)
+  local ret = resolvedPath:sub(secondSlash + 1, endIndex)
+  ret = ret:reverse()
+
+  return label .. ":/" .. ret
+end
+
 function API.open(path)
   local label, resolvedPath = API.seperatePathParts(path)
   local handle = filesystems[label]:open(resolvedPath)
@@ -37,6 +50,12 @@ function API.list(path)
   local label, resolvedPath = API.seperatePathParts(path)
 
   return filesystems[label]:list(resolvedPath)
+end
+
+function API.isDirectory(path)
+  local label, resolvedPath = API.seperatePathParts(path)
+
+  return filesystems[label]:isDirectory(resolvedPath)
 end
 
 function API.mount(filesystemHandler)

@@ -21,18 +21,18 @@ function GUI:new(name, y, text, rectColor, textColor)
 end
 
 function GUI:render()
-  gpu.setBackground(self.rectColor)
-  gpu.setForeground(self.textColor)
+  GPU.setBackground(self.rectColor)
+  GPU.setForeground(self.textColor)
 
-  gpu.fill(self.x, self.y, self.fx, UIoptions.verticalPadding, " ")
+  GPU.fill(self.x, self.y, self.fx, UIoptions.verticalPadding, " ")
 
   local yTextCentrized = self.y + math.floor(UIoptions.verticalPadding / 2)
-  gpu.set(self.x + UIoptions.horizontalPadding / 2, yTextCentrized, self.text)
+  GPU.set(self.x + UIoptions.horizontalPadding / 2, yTextCentrized, self.text)
 end
 
 function GUI:unRender()
-  gpu.setBackground(0x097A2D)
-  gpu.fill(self.x, self.y, self.fx, 3, " ")
+  GPU.setBackground(0x097A2D)
+  GPU.fill(self.x, self.y, self.fx, 3, " ")
 end
 
 function GUI:unRenderAll()
