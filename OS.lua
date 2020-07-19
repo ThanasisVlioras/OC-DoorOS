@@ -19,6 +19,7 @@ end
 FILESYSTEM = doLoadFromBootFS("/Libraries/Filesystem/Filesystem.lua")()
 
 GUI = doLoadFromBootFS("/Libraries/UI.lua")()
+TEXTUI = doLoadFromBootFS("/Libraries/TextUI.lua")()
 MENU = doLoadFromBootFS("/Libraries/MENU.lua")()
 UIoptions = doLoadFromBootFS("/Options/UI")()
 
@@ -29,7 +30,6 @@ GPU = component.proxy(component.list("gpu")())
 
 -- Boot
 doLoadFromBootFS("/Boot/MountFilesystems.lua")()
-doLoadFromBootFS("/Boot/ClearScreen.lua")()
 
 -- Finally, open DoorFiles
 doLoadFromBootFS("/Applications/DoorFiles.lua")()

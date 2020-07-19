@@ -1,6 +1,7 @@
 local function showFiles(path)
   local MENUFiles = {}
   local MENUMain
+  GUI.clearScreen()
 
   local files = FILESYSTEM.list(path)
   for _, file in ipairs(files) do
@@ -12,7 +13,12 @@ local function showFiles(path)
     -- Add Functions
     if FILESYSTEM.isDirectory(path .. file) then
       GUI.returnGUIobjects()[path .. file].onTouch = function()
+        FILESYSTEM.setCurrentPath(path .. file)
         showFiles(path .. file)
+      end
+    else
+      GUI.returnGUIobjects()[path .. file].onE = function()
+        doLoadFromBootFS("/Applications/DoorEditor.lua")(path .. file)
       end
     end
   end
@@ -22,6 +28,7 @@ local function showFiles(path)
   if resolvedPath ~= "/" then
     GUI:new(path .. "Back", 3, "Back", UIoptions.backgroundColor, UIoptions.foregroundColor)
     GUI.returnGUIobjects()[path .. "Back"].onTouch = function()
+      FILESYSTEM.setCurrentPath(FILESYSTEM.levelUp(path))
       showFiles(FILESYSTEM.levelUp(path))
     end
   end
@@ -32,11 +39,12 @@ local function showFiles(path)
   Menu:render(true)
 end
 
-showFiles(component.proxy(computer.getBootAddress()).getLabel() .. "://")
+showFiles(FILESYSTEM.getCurrentPath())
 
 while true do
-  local type, _, _, code = computer.pullSignal()
-  if type == "key_up" then
-    KEYBOARD.keyboardHandle(code)
+  local code = KEYBOARD.keyboardGenericMenuHandle(code)
+  if code == 18 then -- E (This is here because its not a "generic menu" thing but a specifically a DoorFiles thing)
+    selectedObject.onE()
+    showFiles(FILESYSTEM.getCurrentPath())
   end
 end

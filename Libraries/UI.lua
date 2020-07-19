@@ -86,4 +86,10 @@ function GUI:returnGUIobjects()
   return GUIobjects
 end
 
+function GUI:clearScreen()
+  GPU.setBackground(UIoptions.backgroundColor)
+  GPU.setForeground(UIoptions.foregroundColor)
+  GPU.fill(1, 1, 160, 50, " ")
+end
+
 return GUI

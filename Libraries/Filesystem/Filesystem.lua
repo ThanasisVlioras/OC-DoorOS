@@ -1,6 +1,7 @@
 local filesystems = {} -- Each key is a filesystem label, and each value is its handler table.
 local handles = {} -- Each key is a handle and each value is its handler table
 local API = {}
+local currentPath = component.proxy(computer.getBootAddress()).getLabel() .. "://"
 
 function API.seperatePathParts(path)
   local seperatorIndex, seperatorEndIndex = path:find(":/")
@@ -24,6 +25,14 @@ function API.levelUp(path)
   return label .. ":/" .. ret
 end
 
+function API.setCurrentPath(path)
+  currentPath = path
+end
+
+function API.getCurrentPath()
+  return currentPath
+end
+
 function API.open(path)
   local label, resolvedPath = API.seperatePathParts(path)
   local handle = filesystems[label]:open(resolvedPath)
@@ -33,10 +42,10 @@ function API.open(path)
   return handle
 end
 
-function API.read(handle)
+function API.read(handle, length)
   local filesystem = handles[handle]
 
-  return filesystem:read(handle)
+  return filesystem:read(handle, length)
 end
 
 function API.close(handle)
@@ -44,6 +53,14 @@ function API.close(handle)
 
   filesystem:close(handle)
   handles[handle] = nil -- Remove the entry
+end
+
+function API.get(path)
+  local handle = API.open(path)
+  local content = API.read(handle, math.huge)
+  API.close(handle)
+
+  return content
 end
 
 function API.list(path)
