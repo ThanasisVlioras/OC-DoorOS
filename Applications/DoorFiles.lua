@@ -6,18 +6,18 @@ local function showFiles(path)
   local files = FILESYSTEM.list(path)
   for _, file in ipairs(files) do
     -- Add UI
-    GUI:new(path .. file, 3, file, UIoptions.backgroundColor, UIoptions.foregroundColor)
-    table.insert(MENUFiles, GUI.returnGUIobjects()[path .. file])
-    if not MENUMain then MENUMain = GUI.returnGUIobjects()[path .. file] end
+    local GUIobject = GUI:new(path .. file, 3, file, UIoptions.backgroundColor, UIoptions.foregroundColor)
+    table.insert(MENUFiles, GUIobject)
+    if not MENUMain then MENUMain = GUIobject end
 
     -- Add Functions
     if FILESYSTEM.isDirectory(path .. file) then
-      GUI.returnGUIobjects()[path .. file].onTouch = function()
+      GUIobject.onTouch = function()
         FILESYSTEM.setCurrentPath(path .. file)
         showFiles(path .. file)
       end
     else
-      GUI.returnGUIobjects()[path .. file].onE = function()
+      GUIobject.onE = function()
         doLoadFromBootFS("/Applications/DoorEditor.lua")(path .. file)
       end
     end
@@ -26,16 +26,15 @@ local function showFiles(path)
   -- Add "Back" Button (If not at root)
   local _, resolvedPath = FILESYSTEM.seperatePathParts(path)
   if resolvedPath ~= "/" then
-    GUI:new(path .. "Back", 3, "Back", UIoptions.backgroundColor, UIoptions.foregroundColor)
-    GUI.returnGUIobjects()[path .. "Back"].onTouch = function()
+    local back = GUI:new(path .. "Back", 3, "Back", UIoptions.backgroundColor, UIoptions.foregroundColor)
+    back.onTouch = function()
       FILESYSTEM.setCurrentPath(FILESYSTEM.levelUp(path))
       showFiles(FILESYSTEM.levelUp(path))
     end
 
-    if not MENUMain then MENUMain = GUI.returnGUIobjects()[path .. "Back"] end
+    table.insert(MENUFiles, back)
+    if not MENUMain then MENUMain = back end
   end
-
-  table.insert(MENUFiles, GUI.returnGUIobjects()[path .. "Back"])
 
   local Menu = MENU:new(MENUFiles, MENUMain)
   Menu:render(true)

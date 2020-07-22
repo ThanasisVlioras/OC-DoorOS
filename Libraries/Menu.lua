@@ -11,10 +11,6 @@ function MENU:new(objects, mainObject)
   return object
 end
 
-local function centrizeObject(fx) -- Gives the proper x value that puts the object's center through the screen's center
-  return 80 - (fx / 2)
-end
-
 function MENU:tileArrange()
   local toArrange = self.attached
   local tiles = {}
@@ -47,7 +43,7 @@ function MENU:tileArrange()
 
     -- Arrange Row
 
-    local x = centrizeObject(fx)
+    local x = GUI.centrizeObject(fx)
     for key, object in ipairs(tiles[currentRow]) do
       object.x = x
       object.y = currentRow * 3
@@ -70,7 +66,7 @@ function MENU:tileArrange()
 end
 
 function MENU:render(bool)
-  GUI:unRenderAll()
+  GUI:clearScreen()
 
   if bool then self:tileArrange() return end
 
@@ -80,7 +76,6 @@ function MENU:render(bool)
 
   selectedObject = self.mainObject
   selectedObject:setHighlight(true)
-
 end
 
 return MENU

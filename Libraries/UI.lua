@@ -2,7 +2,7 @@ local GUI = {}
 local GUIobjects = {}
 UIoptions = doLoadFromBootFS("/Options/UI")
 
-local function centrizeObject(fx) -- Gives the proper x value that puts the object's center through the screen's center
+function GUI.centrizeObject(fx) -- Gives the proper x value that puts the object's center through the screen's center
   return 80 - (fx / 2)
 end
 
@@ -11,13 +11,15 @@ function GUI:new(name, y, text, rectColor, textColor)
   setmetatable(object, self)
   self.__index = self
 
-  object.x = centrizeObject(#text)
+  object.x = GUI.centrizeObject(#text)
   object.y = y
   object.text = text
   object.fx = #object.text + UIoptions.horizontalPadding
   object.rectColor = rectColor
   object.textColor = textColor
   GUIobjects[name] = object
+
+  return object
 end
 
 function GUI:render()
@@ -33,12 +35,6 @@ end
 function GUI:unRender()
   GPU.setBackground(0x097A2D)
   GPU.fill(self.x, self.y, self.fx, 3, " ")
-end
-
-function GUI:unRenderAll()
-  for _, object in pairs(GUIobjects) do
-    object:unRender()
-  end
 end
 
 function GUI:setAdjacentObjects(up, down, left, right)
