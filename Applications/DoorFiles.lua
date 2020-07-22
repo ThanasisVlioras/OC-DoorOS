@@ -31,6 +31,8 @@ local function showFiles(path)
       FILESYSTEM.setCurrentPath(FILESYSTEM.levelUp(path))
       showFiles(FILESYSTEM.levelUp(path))
     end
+
+    if not MENUMain then MENUMain = GUI.returnGUIobjects()[path .. "Back"] end
   end
 
   table.insert(MENUFiles, GUI.returnGUIobjects()[path .. "Back"])
